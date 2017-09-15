@@ -18,11 +18,13 @@ The [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) n
 
 # Package & Deploy
 
-The whole demo stack is deployed in AWS using CloudFormation, in order to deploy the Lambda functions [AWS SAM](https://github.com/awslabs/serverless-application-model) is utilised, meaning a package function has to be run first. This packaging stage involves uploading the lambda code to an S3 bucket that resides in the same region as the stack will run. If you don't have a bucket create one now.
+The whole demo stack is deployed in AWS using CloudFormation, in order to deploy the Lambda functions [AWS SAM](https://github.com/awslabs/serverless-application-model) is utilised, meaning a package function has to be run first. This packaging stage involves uploading the lambda code to an S3 bucket that resides in the same region as the stack will run. 
+
+Login to the AWS console, select either Ireland or North Virginia as the region and create an S3 bucket for the code we'll package shortly.
 
 Run the <code>package-cfn</code> script passing the name of the S3 bucket to upload the code to. This will generate a file named <code>cloud-formation-deploy.yaml</code>.
 
-Login to the AWS console, select either Ireland or North Virginia as the region and go to the CloudFormation service home page. 
+Navigate to the CloudFormation page in the AWS Console.
 
 Press the "Create Stack" button, then select the "Upload a template to S3" option under the "Choose a template" section. Press the "Choose file" button and select the <code>cloud-formation-deploy.yaml</code> we just generated. Press "Next".
 
