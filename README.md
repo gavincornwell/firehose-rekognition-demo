@@ -113,3 +113,9 @@ To check that events are being emitted you can also examine the ActiveMQ admin c
 ![Events](./diagrams/events.png)
 
 If you're still having problems feel free to raise an [issue](https://github.com/gavincornwell/firehose-rekognition-demo/issues).
+
+# Cleanup
+
+When you're finished with the stack (you will be charged a small amount for the resources it uses) navigate to the CloudFormation console, select the stack you created and choose "Delete Stack" from the "Actions" menu.
+
+NOTE: The S3 bucket for the stack will *NOT* be deleted by CloudFormation, find the bucket (the start of the bucket name will be the same as stack you created) in the S3 console and delete it.
