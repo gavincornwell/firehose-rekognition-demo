@@ -117,20 +117,63 @@ var processAlfrescoEvent = function(alfEventString, callback) {
                 } else {
                     console.log("Successfully analysed image: " + JSON.stringify(data, null, 2));
                     
-                    var isCar = false;
-                    var isMotorcycle = false;
-                    var isBicycle = false;
-                    
+                    // iterate through labels to identify
+                    var imageType, imageTypeDetected, label;
                     var labels = data.Labels;
-                    labels.forEach(function(entry) {
-                        if (entry.Name == "Car") {
-                            isCar = true;
-                        } else if (entry.Name == "Motorcycle") {
-                            isMotorcycle = true;
-                        } else if (entry.Name == "Bicycle") {
-                            isBicycle = true;
+                    for (var idx = 0; idx < labels.length; idx++) {
+                        imageTypeDetected = false;
+                        label = labels[idx];
+
+                        switch (label.Name) {
+                            case "Car":
+                                imageType = "Car";
+                                imageTypeDetected = true;
+                                break;
+                            case "Motorcycle":
+                                imageType = "Motorcycle";
+                                imageTypeDetected = true;
+                                break;
+                            case "Boat":
+                                imageType = "Boat";
+                                imageTypeDetected = true;
+                                break;
+                            case "Electronics":
+                                imageType = "Electronics";
+                                imageTypeDetected = true;
+                                break;
+                            case "Jewelry":
+                                imageType = "Jewelry";
+                                imageTypeDetected = true;
+                                break;
+                            case "Wristwatch":
+                                imageType = "Wristwatch";
+                                imageTypeDetected = true;
+                                break;
+                            case "Clock":
+                                imageType = "Clock";
+                                imageTypeDetected = true;
+                                break;
+                            case "Bicycle":
+                                imageType = "Bicycle";
+                                imageTypeDetected = true;
+                                break;
+                            case "Sport":
+                                imageType = "Sport";
+                                imageTypeDetected = true;
+                                break;
+                            case "Furniture":
+                                imageType = "Furniture";
+                                imageTypeDetected = true;
+                                break;
+                            default:
+                                imageType = "Unknown";
                         }
-                    });
+
+                        // break if the image has been identified
+                        if (imageTypeDetected) {
+                            break;
+                        }
+                    }
                     
                     // call the REST API to set metadata appropriately
                     var nodeInfoPath = "/alfresco/api/-default-/public/alfresco/versions/1/nodes/" + nodeId;
@@ -163,36 +206,14 @@ var processAlfrescoEvent = function(alfEventString, callback) {
                         callback(err);
                     });
                     
+                    // update body appropriately
                     var updateBody = {
                         nodeType: "acme:insuranceClaimImage",
                         properties: {
-                            "acme:imageId": Date.now()
+                            "acme:imageId": Date.now(),
+                            "acme:claimType": imageType
                         }
                     };
-                    
-                    // update body appropriately
-                    if (isCar) {
-                        updateBody.properties["acme:claimType"] = "Car";
-                    } else if (isMotorcycle) {
-                        updateBody.properties["acme:claimType"] = "Motorcycle";
-                    } else if (isBicycle) {
-                        updateBody.properties["acme:claimType"] = "Bicycle";
-                    } else {
-                        // add the missing property aspect, note: ideally here
-                        // we would retrieve the latest version of the node to
-                        // get the current aspect names
-                        var aspects = [
-                            "rn:renditioned",
-                            "cm:versionable",
-                            "cm:titled",
-                            "cm:auditable",
-                            "cm:author",
-                            "cm:thumbnailModification",
-                            "exif:exif",
-                            "acme:missingClaimTypeProperty"
-                            ];
-                        updateBody.aspectNames = aspects;
-                    }
                     
                     // execute the update request
                     var updateBodyString = JSON.stringify(updateBody);

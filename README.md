@@ -70,19 +70,17 @@ and finally, the labels returned for the logo image:
 
 After being analysed by Rekognition the Lambda function uses the Alfresco REST API to set the appropriate metadata for the image.
 
-Go back to Share, navigate to the folder where you uploaded the images and click on the image containing the car. Examine the properties of the image and you'll see it's type has been changed to <code>acme:insuranceClaimImage</code> as the two custom properties are present as shown in the screenshot below:
+Go back to Share, navigate to the folder where you uploaded the images and click on the image containing the car. Examine the properties of the image and you'll see it's type has been changed to <code>acme:insuranceClaimImage</code> as the custom properties are present as shown in the screenshot below:
 
 ![Car Properties](./diagrams/properties-car.png)
 
 A unique ID has been generated for the <code>acme:imageId</code> property and the <code>acme:claimType</code> property has been set appropriately. The same treatment has been given to the image containing the bicycle.
 
-Now examine the properties for the Alfresco logo image. You'll see that the type has been converted as before but because Rekognition did not detect one of the vehicles we're looking for the <code>acme:claimType</code> is not set as shown in the screenshot below:
+Now examine the properties for the Alfresco logo image. You'll see that the type has been converted as before but the <code>acme:claimType</code> property has been set to <code>Unknown</code> as shown in the screenshot below:
 
 ![Logo Properties](./diagrams/properties-logo.png)
 
-Under "Document Actions" in Share, click the "Manage Aspects" link. You'll notice that the <code>acme:missingClaimTypeProperty</code> aspect has also been applied (see screenshot below), this could be used to drive another process, possibly through [SmartFolders](https://docs.alfresco.com/5.2/concepts/sf-whatis.html), to flag these images for manual processing.
-
-![Logo Aspects](./diagrams/aspects-logo.png)
+The updating of the metadata could be used to drive another process, for example, [SmartFolders](https://docs.alfresco.com/5.2/concepts/sf-whatis.html) could be used to categorise the images and highlight those that need to be manually processed.
 
 # Troubleshooting
 

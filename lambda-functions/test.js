@@ -8,8 +8,12 @@ var s3Event = {};
 // run the tests
 console.log("Running tests...");
 
-// TODO: Add the public IP/host name of the repository
+// TODO: Add the public IP/host name and password of the repository
 process.env.REPO_HOST = "";
+process.env.REPO_PASSWORD = "";
+
+// TODO: instantiate client in image-processor function using:
+// const rekognition = new aws.Rekognition({region: 'eu-west-1'});
 
 // execute the handler
 ingestion.handler(s3Event, {}, function(error, result) {

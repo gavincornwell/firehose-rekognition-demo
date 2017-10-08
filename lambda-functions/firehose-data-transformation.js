@@ -15,7 +15,7 @@ exports.handler = (event, context, callback) => {
 
         if (decodedDataObj.type == "NODEADDED" &&
             decodedDataObj.nodeType == "cm:content" &&
-            (decodedDataObj.name.endsWith(".jpg")||decodedDataObj.name.endsWith(".png"))) {
+            (decodedDataObj.name.endsWith(".jpg")||decodedDataObj.name.endsWith(".jpeg")||decodedDataObj.name.endsWith(".png"))) {
             result = "Ok";
             
             // add carriage return to data and re-encode
