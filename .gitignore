@@ -58,3 +58,4 @@ typings/
 .env
 
 cloud-formation-deploy.yaml
+*.jar

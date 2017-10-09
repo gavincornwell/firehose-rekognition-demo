@@ -6,4 +6,11 @@ then
   exit 1
 fi
 
+EMPTY_BUCKET_JAR_VERSION=1.0
+EMPTY_BUCKET_JAR_NAME=alfresco-lambda-empty-s3-bucket-$EMPTY_BUCKET_JAR_VERSION.jar
+
+if [ ! -f ./lambda-functions/$EMPTY_BUCKET_JAR_NAME ]; then
+   wget -O ./lambda-functions/$EMPTY_BUCKET_JAR_NAME https://artifacts.alfresco.com/nexus/service/local/repositories/releases/content/org/alfresco/alfresco-lambda-empty-s3-bucket/$EMPTY_BUCKET_JAR_VERSION/$EMPTY_BUCKET_JAR_NAME
+fi
+
 aws cloudformation package --template-file cloud-formation-template.yaml --s3-bucket $1 --output-template-file cloud-formation-deploy.yaml

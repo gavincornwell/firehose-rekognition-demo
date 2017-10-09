@@ -133,6 +133,37 @@ Resources:
               Service:
                 - lambda.amazonaws.com
 
+  EmptyBucketRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - s3.amazonaws.com
+                - lambda.amazonaws.com
+                - events.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: s3Access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:DeleteBucket
+                  - s3:ListBucketVersions
+                  - s3:DeleteObject
+                  - s3:DeleteObjectVersion
+                  - s3:PutObject
+                Resource:
+                  - "*"
+                  
   # Define EC2 instance
 
   RepoServerSecurityGroup:
@@ -204,7 +235,7 @@ Resources:
 
   AlfrescoEventsBucket:
     # TODO: add shared 'empty bucket lambda' to delete bucket
-    DeletionPolicy: Retain
+    #DeletionPolicy: Retain
     Type: AWS::S3::Bucket
     Properties:
       LifecycleConfiguration:
@@ -277,6 +308,24 @@ Resources:
             Parameters:
             - ParameterName: LambdaArn
               ParameterValue: !GetAtt DataTransformationLambda.Arn
+
+  # Custom resource to delete S3 bucket
+  EmptyBucketFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Lambda function that empties the given s3 bucket
+      Handler: org.alfresco.aws.lambda.handlers.cfn.EmptyS3Bucket
+      Role: !GetAtt EmptyBucketRole.Arn
+      CodeUri: ./lambda-functions/alfresco-lambda-empty-s3-bucket-1.0.jar
+      Runtime: java8
+      MemorySize: 256
+      Timeout: 60
+
+  EmptyCustomResource:
+    Type: Custom::EmptyBucketFunction
+    Properties:
+      ServiceToken: !GetAtt EmptyBucketFunction.Arn
+      BucketName: !Ref AlfrescoEventsBucket
 
 Outputs:
 
