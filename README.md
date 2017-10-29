@@ -4,7 +4,7 @@ This repository contains a demonstration that processes [Alfresco](https://www.a
 
 # Use Case
 
-The demo uses a fictional use case around an insurance company. This insurance company only deals with vehicle insurance, more specifically, car, motorcycle and bicycle insurance. As images are uploaded into the system they are sent to Rekognition for analysis, the content type of the image is changed to a [custom type](https://github.com/gavincornwell/firehose-extension/blob/master/firehose-extension-platform-jar/src/main/resources/alfresco/module/firehose-extension-platform-jar/model/content-model.xml), acme:insuranceClaimImage, a unique is generated and the acme:claimType property set appropriately. If the image is not a car, motorcycle or bicylce the acme:missingClaimTypeProperty aspect is applied to flag the image for manual intervention.
+The demo uses a fictional use case around an insurance company. As images are uploaded into the system they are sent to Rekognition for analysis, the content type of the image is changed to a [custom type](https://github.com/gavincornwell/firehose-extension/blob/master/firehose-extension-platform-jar/src/main/resources/alfresco/module/firehose-extension-platform-jar/model/content-model.xml), acme:insuranceClaimImage, a unique ID is generated and the acme:claimType property set appropriately. The system recognises Cars, Motorcycles, Boats, Electronics, Jewelry, Wristwatches, Clocks, Bicycles, Sport Equipment and Furniture, anything not recognised has it's claimType property set to "Unknown".
 
 This is achieved using the architecture shown in the diagram below:
 
